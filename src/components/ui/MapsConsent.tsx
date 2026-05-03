@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Map, MapPin, Navigation, ShieldCheck } from "lucide-react";
+import { Info, Map, MapPin, Navigation, ShieldCheck } from "lucide-react";
 import { CONTACT } from "../../config/contact";
 import {
   MAPS_CONSENT_EVENT,
@@ -42,6 +42,17 @@ function MapsConsent() {
     </a>
   );
 
+  const meetingHint = (
+    <p className="inline-flex items-start gap-1.5 text-xs italic leading-relaxed text-slate-500 dark:text-slate-400">
+      <Info className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
+      <span>
+        Treffpunkt: <strong className="font-semibold not-italic">Parkplatz neben der Flugschule Phoenix Bodensee</strong>.
+        Google Maps zeigt für die Adresse den Eintrag der Flugschule – wir
+        treffen uns daneben.
+      </span>
+    </p>
+  );
+
   if (consent) {
     return (
       <div className="space-y-3">
@@ -61,6 +72,7 @@ function MapsConsent() {
           </span>
           {directionsButton}
         </div>
+        {meetingHint}
       </div>
     );
   }
@@ -102,6 +114,7 @@ function MapsConsent() {
             <MapPin className="h-3.5 w-3.5" />
             {MEETING_ADDRESS}
           </p>
+          <div className="mt-2">{meetingHint}</div>
         </div>
       </div>
     </div>
