@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Cookie, X } from "lucide-react";
-import { grantMapsConsent } from "../../lib/consent";
+import { grantAnalyticsConsent, grantMapsConsent } from "../../lib/consent";
 
 const SEEN_KEY = "consentBannerSeen";
 const SHOW_DELAY_MS = 800;
@@ -49,6 +49,7 @@ function ConsentBanner() {
 
   const handleAccept = () => {
     grantMapsConsent();
+    grantAnalyticsConsent();
     close();
   };
 
@@ -70,8 +71,9 @@ function ConsentBanner() {
           <div className="min-w-0 flex-1 text-sm leading-relaxed text-slate-700 dark:text-slate-200">
             <p>
               Diese Seite nutzt nur technisch notwendige Funktionen.{" "}
-              <strong>Google Maps</strong> wird ausschließlich nach Ihrer
-              Einwilligung geladen.
+              <strong>Google Maps</strong> und{" "}
+              <strong>anonyme Statistik</strong> werden ausschließlich nach
+              Ihrer Einwilligung geladen.
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-2">
               <button
@@ -79,7 +81,7 @@ function ConsentBanner() {
                 onClick={handleAccept}
                 className="rounded-full bg-brand-600 px-4 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-brand-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900"
               >
-                Maps erlauben
+                Akzeptieren
               </button>
               <button
                 type="button"

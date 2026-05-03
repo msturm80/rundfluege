@@ -97,19 +97,49 @@ function Datenschutz() {
         widerrufen werden.
       </p>
 
-      <h2>6. Cookies und lokale Speicherung</h2>
+      <h2>6. Google Analytics</h2>
+      <p>
+        Diese Website nutzt Google Analytics 4, einen Webanalysedienst der
+        Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland.
+      </p>
+      <p>
+        Google Analytics setzt Cookies und ähnliche Technologien ein, um
+        Informationen über die Nutzung der Website zu sammeln. Diese
+        Informationen werden an Server von Google übertragen und dort
+        gespeichert. Eine Übermittlung in die USA ist möglich.
+      </p>
+      <p>
+        Google Analytics wird auf dieser Website ausschließlich nach
+        ausdrücklicher Einwilligung des Besuchers geladen. Vor der
+        Einwilligung findet keine Verbindung zu Google Analytics statt. Die
+        IP-Adresse wird durch die Funktion <em>anonymize_ip</em> gekürzt
+        verarbeitet.
+      </p>
+      <p>
+        Erfasst werden insbesondere: gekürzte IP-Adresse, Geräte- und
+        Browser-Informationen, Verweildauer, besuchte Seiten und
+        Interaktionen.
+      </p>
+      <p>
+        Rechtsgrundlage ist Art. 6 Abs. 1 lit. a DSGVO. Die Einwilligung kann
+        jederzeit über die <Link to="/cookies">Cookie-Einstellungen</Link>{" "}
+        widerrufen werden. Die verwendete Mess-ID lautet G-KKJGPNL47Z.
+      </p>
+
+      <h2>7. Cookies und lokale Speicherung</h2>
       <p>
         Diese Website verwendet technisch notwendige Cookies oder lokale
         Speichermechanismen, soweit sie für den Betrieb der Website erforderlich
         sind.
       </p>
       <p>
-        Nicht notwendige Dienste, insbesondere Google Maps, werden nur nach
-        Einwilligung geladen. Die Auswahl des Besuchers wird lokal gespeichert,
-        damit die Entscheidung beim nächsten Besuch berücksichtigt werden kann.
+        Nicht notwendige Dienste, insbesondere Google Maps und Google
+        Analytics, werden nur nach Einwilligung geladen. Die Auswahl des
+        Besuchers wird lokal gespeichert, damit die Entscheidung beim nächsten
+        Besuch berücksichtigt werden kann.
       </p>
 
-      <h2>7. Rechte der betroffenen Personen</h2>
+      <h2>8. Rechte der betroffenen Personen</h2>
       <p>Besucher haben nach Maßgabe der DSGVO folgende Rechte:</p>
       <ul>
         <li>Recht auf Auskunft</li>
@@ -125,7 +155,7 @@ function Datenschutz() {
         <a href={`mailto:${CONTACT.pilotEmail}`}>{CONTACT.pilotEmail}</a>
       </p>
 
-      <h2>8. Beschwerderecht</h2>
+      <h2>9. Beschwerderecht</h2>
       <p>
         Betroffene Personen haben das Recht, sich bei einer
         Datenschutzaufsichtsbehörde zu beschweren.
@@ -135,7 +165,7 @@ function Datenschutz() {
         und die Informationsfreiheit Baden-Württemberg sein.
       </p>
 
-      <h2>9. Stand</h2>
+      <h2>10. Stand</h2>
       <p>Stand: Mai 2026</p>
     </LegalLayout>
   );
