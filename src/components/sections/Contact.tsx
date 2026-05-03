@@ -67,12 +67,37 @@ function Contact() {
     return () => window.removeEventListener(PREFILL_ROUTE_EVENT, handlePrefill);
   }, []);
 
+  const validateLive = (
+    name: keyof FormState,
+    value: string,
+  ): string | undefined => {
+    if (!value.trim()) return undefined; // empty: don't shout, just neutral
+    if (name === "email" && !EMAIL_REGEX.test(value.trim()))
+      return t("contact.form.invalidEmail");
+    if (name === "phone" && !PHONE_DIGITS_REGEX.test(cleanPhone(value)))
+      return t("contact.form.invalidPhone");
+    return undefined;
+  };
+
+  const isLiveValid = (name: "email" | "phone"): boolean => {
+    const v = values[name].trim();
+    if (!v) return false;
+    if (errors[name]) return false;
+    if (name === "email") return EMAIL_REGEX.test(v);
+    return PHONE_DIGITS_REGEX.test(cleanPhone(v));
+  };
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setValues((prev) => ({ ...prev, [name]: value }));
-    if (errors[name as keyof FormState]) {
+    if (name === "email" || name === "phone") {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: validateLive(name as keyof FormState, value),
+      }));
+    } else if (errors[name as keyof FormState]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };
@@ -135,6 +160,33 @@ function Contact() {
 
   const fieldError = (key: keyof FormState) =>
     errors[key] ? "border-red-500 focus:border-red-500 focus:ring-red-500/40" : "";
+
+  const fieldStatusClass = (key: "email" | "phone") => {
+    if (errors[key]) return "border-red-500 focus:border-red-500 focus:ring-red-500/40";
+    if (isLiveValid(key))
+      return "border-emerald-500 focus:border-emerald-500 focus:ring-emerald-500/40";
+    return "";
+  };
+
+  const renderStatusIcon = (key: "email" | "phone") => {
+    if (errors[key]) {
+      return (
+        <AlertCircle
+          aria-hidden="true"
+          className="pointer-events-none absolute right-4 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-red-500"
+        />
+      );
+    }
+    if (isLiveValid(key)) {
+      return (
+        <CheckCircle2
+          aria-hidden="true"
+          className="pointer-events-none absolute right-4 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-emerald-500"
+        />
+      );
+    }
+    return null;
+  };
 
   const isLocked = status === "sending" || status === "success";
 
@@ -261,12 +313,13 @@ function Contact() {
                         disabled={isLocked}
                         aria-invalid={Boolean(errors.email)}
                         aria-describedby={errors.email ? "contact-email-error" : undefined}
-                        className={`peer input-field placeholder-transparent ${fieldError("email")}`}
+                        className={`peer input-field placeholder-transparent pr-10 ${fieldStatusClass("email")}`}
                       />
                       <label htmlFor="contact-email" className={labelFloating(Boolean(errors.email))}>
                         {t("contact.form.email")}
                         {requiredMark}
                       </label>
+                      {renderStatusIcon("email")}
                       {errors.email && (
                         <p
                           id="contact-email-error"
@@ -291,12 +344,13 @@ function Contact() {
                         disabled={isLocked}
                         aria-invalid={Boolean(errors.phone)}
                         aria-describedby={errors.phone ? "contact-phone-error" : undefined}
-                        className={`peer input-field placeholder-transparent ${fieldError("phone")}`}
+                        className={`peer input-field placeholder-transparent pr-10 ${fieldStatusClass("phone")}`}
                       />
                       <label htmlFor="contact-phone" className={labelFloating(Boolean(errors.phone))}>
                         {t("contact.form.phone")}
                         {requiredMark}
                       </label>
+                      {renderStatusIcon("phone")}
                       {errors.phone && (
                         <p
                           id="contact-phone-error"
