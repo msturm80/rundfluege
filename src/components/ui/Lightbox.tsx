@@ -135,13 +135,17 @@ function Lightbox({ photos, openIndex, onClose }: LightboxProps) {
       onTouchEnd={handleTouchEnd}
       className="animate-fade-in fixed inset-0 z-[60] bg-black touch-pan-y"
     >
-      {/* Image — full bleed, no chrome, no rounding */}
+      {/* Image — full bleed, no chrome, no rounding.
+          Landscape uses the 19.5:9 cinema crop with object-cover so the
+          photo fills the iPhone 17 screen edge-to-edge. */}
       <img
-        key={currentIndex}
-        src={photo.lg}
+        key={`${currentIndex}-${isLandscape ? "land" : "port"}`}
+        src={isLandscape ? photo.cinema : photo.lg}
         alt={photo.alt[language]}
         onClick={(e) => e.stopPropagation()}
-        className="animate-fade-in absolute inset-0 h-full w-full object-contain"
+        className={`animate-fade-in absolute inset-0 h-full w-full ${
+          isLandscape ? "object-cover" : "object-contain"
+        }`}
       />
 
       {/* Close button — always visible */}

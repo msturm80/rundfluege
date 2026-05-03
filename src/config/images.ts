@@ -2,6 +2,11 @@ export type Photo = {
   id: string;
   md: string;
   lg: string;
+  /**
+   * 19.5:9 (iPhone 17 landscape) crop, used by the Lightbox in landscape
+   * mode to fill the entire screen without letterboxing.
+   */
+  cinema: string;
   alt: { de: string; en: string };
   caption?: { de: string; en: string };
   width: number;
@@ -18,6 +23,7 @@ const photo = (
   id,
   md: `/images/photos/${id}_md.jpg`,
   lg: `/images/photos/${id}_lg.jpg`,
+  cinema: `/images/photos/${id}_cinema.jpg`,
   alt,
   caption,
   width,
