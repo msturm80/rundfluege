@@ -16,6 +16,61 @@ const PHONE_RE = /^\+?\d{7,15}$/;
 const cleanPhone = (raw: string) => raw.replace(/[\s\-().\/]/g, "");
 const HONEYPOT_FIELD = "company";
 
+// In-memory sliding-window rate limit. Per-IP, two windows:
+//   - 3 requests per 10 minutes (short-burst protection)
+//   - 10 requests per 24 hours  (slow-drip protection)
+// Stored on the function-instance heap. Cold starts reset state, but cold
+// starts also slow attacks naturally. Combined with honeypot + validation
+// this is plenty for a low-traffic site. Upgrade to Upstash if you ever
+// see actual abuse.
+const SHORT_WINDOW_MS = 10 * 60 * 1000;
+const SHORT_WINDOW_MAX = 3;
+const LONG_WINDOW_MS = 24 * 60 * 60 * 1000;
+const LONG_WINDOW_MAX = 10;
+
+const ipHits = new Map<string, number[]>();
+
+const getClientIp = (req: VercelRequest): string => {
+  const forwarded = req.headers["x-forwarded-for"];
+  if (typeof forwarded === "string" && forwarded.length > 0) {
+    return forwarded.split(",")[0].trim();
+  }
+  const real = req.headers["x-real-ip"];
+  if (typeof real === "string" && real.length > 0) return real;
+  return req.socket?.remoteAddress ?? "unknown";
+};
+
+type LimitResult = { ok: true } | { ok: false; retryAfter: number };
+
+const checkRateLimit = (ip: string): LimitResult => {
+  const now = Date.now();
+  const all = (ipHits.get(ip) ?? []).filter((t) => now - t < LONG_WINDOW_MS);
+  const recent = all.filter((t) => now - t < SHORT_WINDOW_MS);
+
+  if (recent.length >= SHORT_WINDOW_MAX) {
+    const retryAfter = Math.ceil((SHORT_WINDOW_MS - (now - recent[0])) / 1000);
+    return { ok: false, retryAfter };
+  }
+  if (all.length >= LONG_WINDOW_MAX) {
+    const retryAfter = Math.ceil((LONG_WINDOW_MS - (now - all[0])) / 1000);
+    return { ok: false, retryAfter };
+  }
+
+  all.push(now);
+  ipHits.set(ip, all);
+
+  // Opportunistic GC: prevent the map from growing unbounded.
+  if (ipHits.size > 5000) {
+    for (const [k, v] of ipHits.entries()) {
+      const fresh = v.filter((t) => now - t < LONG_WINDOW_MS);
+      if (fresh.length === 0) ipHits.delete(k);
+      else ipHits.set(k, fresh);
+    }
+  }
+
+  return { ok: true };
+};
+
 const passengersLabel = (count: string | undefined, lang: "de" | "en") => {
   const n = count ?? "2";
   if (lang === "en") return n === "1" ? "1 passenger" : `${n} passengers`;
@@ -62,6 +117,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  const ip = getClientIp(req);
+  const limit = checkRateLimit(ip);
+  if (!limit.ok) {
+    res.setHeader("Retry-After", String(limit.retryAfter));
+    return res.status(429).json({ error: "Too many requests", retryAfter: limit.retryAfter });
   }
 
   const body = (req.body ?? {}) as ContactPayload & Record<string, unknown>;

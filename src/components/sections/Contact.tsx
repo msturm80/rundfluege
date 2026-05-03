@@ -27,7 +27,7 @@ type FormState = {
 
 type FormErrors = Partial<Record<keyof FormState, string>>;
 
-type Status = "idle" | "sending" | "success" | "error";
+type Status = "idle" | "sending" | "success" | "error" | "rateLimited";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_DIGITS_REGEX = /^\+?\d{7,15}$/;
@@ -106,6 +106,10 @@ function Contact() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...values, language }),
       });
+      if (res.status === 429) {
+        setStatus("rateLimited");
+        return;
+      }
       if (!res.ok) throw new Error(`Request failed: ${res.status}`);
       setStatus("success");
     } catch (err) {
@@ -403,6 +407,16 @@ function Contact() {
                     >
                       <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
                       <p>{t("contact.form.error")}</p>
+                    </div>
+                  )}
+
+                  {status === "rateLimited" && (
+                    <div
+                      role="alert"
+                      className="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-700/60 dark:bg-amber-900/30 dark:text-amber-100"
+                    >
+                      <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
+                      <p>{t("contact.form.rateLimited")}</p>
                     </div>
                   )}
 
