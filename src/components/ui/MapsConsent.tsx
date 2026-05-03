@@ -13,12 +13,15 @@ const MEETING_LAT = 47.667308;
 const MEETING_LNG = 9.511404;
 const MEETING_ZOOM = 17;
 const MEETING_COORDS = `${MEETING_LAT},${MEETING_LNG}`;
+// Custom label appended in parens overrides Google's POI snapping
+// (otherwise Google labels the pin as the nearest registered business).
+const MEETING_LABEL = "Treffpunkt+Rundflug+D-EIZY";
 
 const buildMapEmbedUrl = (): string =>
-  `https://www.google.com/maps?q=${MEETING_COORDS}&ll=${MEETING_COORDS}&z=${MEETING_ZOOM}&output=embed`;
+  `https://www.google.com/maps?q=${MEETING_COORDS}+(${MEETING_LABEL})&ll=${MEETING_COORDS}&z=${MEETING_ZOOM}&output=embed`;
 
 const buildDirectionsUrl = (): string =>
-  `https://www.google.com/maps/dir/?api=1&destination=${MEETING_COORDS}`;
+  `https://www.google.com/maps/dir/?api=1&destination=${MEETING_COORDS}+(${MEETING_LABEL})`;
 
 function MapsConsent() {
   const [consent, setConsent] = useState<boolean>(false);
