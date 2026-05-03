@@ -80,10 +80,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: "Message too long" });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = process.env.RESEND_API_KEY?.trim();
   const from =
-    process.env.MAIL_FROM ?? "Rundflüge Bodensee <noreply@bodensee-rundflug.com>";
-  const to = process.env.INQUIRY_EMAIL ?? "martin@sturms.org";
+    process.env.MAIL_FROM?.trim() ||
+    "Rundflüge Bodensee <noreply@bodensee-rundflug.com>";
+  const to = process.env.INQUIRY_EMAIL?.trim() || "martin@sturms.org";
 
   if (!apiKey) {
     console.error("RESEND_API_KEY missing");
