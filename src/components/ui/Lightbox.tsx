@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type TouchEvent } from "react";
 import { createPortal } from "react-dom";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import type { Photo } from "../../config/images";
@@ -15,6 +15,8 @@ function Lightbox({ photos, openIndex, onClose }: LightboxProps) {
   const [currentIndex, setCurrentIndex] = useState<number>(openIndex ?? 0);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const previouslyFocusedRef = useRef<HTMLElement | null>(null);
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
 
   const isOpen = openIndex !== null;
   const total = photos.length;
@@ -26,6 +28,21 @@ function Lightbox({ photos, openIndex, onClose }: LightboxProps) {
   const goNext = useCallback(() => {
     setCurrentIndex((i) => (i + 1) % total);
   }, [total]);
+
+  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+  const handleTouchEnd = (e: TouchEvent<HTMLDivElement>) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    const dy = e.changedTouches[0].clientY - touchStartY.current;
+    touchStartX.current = null;
+    touchStartY.current = null;
+    if (Math.abs(dx) < 50 || Math.abs(dx) <= Math.abs(dy)) return;
+    if (dx > 0) goPrev();
+    else goNext();
+  };
 
   useEffect(() => {
     if (openIndex !== null) {
@@ -78,7 +95,9 @@ function Lightbox({ photos, openIndex, onClose }: LightboxProps) {
       aria-modal="true"
       aria-label={t("gallery.title")}
       onClick={onClose}
-      className="animate-fade-in fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/95 backdrop-blur-sm"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      className="animate-fade-in fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/95 backdrop-blur-sm touch-pan-y"
     >
       <button
         ref={closeButtonRef}

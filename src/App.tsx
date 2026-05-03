@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import Impressum from "./pages/Impressum";
 import Datenschutz from "./pages/Datenschutz";
 import Cookies from "./pages/Cookies";
+import Bildnachweise from "./pages/Bildnachweise";
 import ConsentBanner from "./components/ui/ConsentBanner";
 import { useScrollReveal } from "./hooks/useScrollReveal";
 import { useI18n } from "./i18n/I18nContext";
@@ -63,6 +64,7 @@ function App() {
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/datenschutz" element={<Datenschutz />} />
         <Route path="/cookies" element={<Cookies />} />
+        <Route path="/bildnachweise" element={<Bildnachweise />} />
         <Route path="*" element={<HomePage />} />
       </Routes>
       <ConsentBanner />

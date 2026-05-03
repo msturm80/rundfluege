@@ -2,6 +2,7 @@ import { Plane, Mail, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useI18n } from "../../i18n/I18nContext";
 import { CONTACT } from "../../config/contact";
+import { meetingMapsUrl } from "../../lib/maps";
 
 function Footer() {
   const { t } = useI18n();
@@ -47,11 +48,19 @@ function Footer() {
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-600 dark:text-brand-300" />
-                <address className="not-italic leading-relaxed">
-                  <span className="block">{CONTACT.meetingAddress.line1}</span>
-                  <span className="block">{CONTACT.meetingAddress.line2}</span>
-                  <span className="block">{CONTACT.meetingAddress.line3}</span>
-                </address>
+                <a
+                  href={meetingMapsUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Treffpunkt auf Google Maps öffnen"
+                  className="not-italic leading-relaxed transition hover:text-brand-600 dark:hover:text-brand-300"
+                >
+                  <address className="not-italic">
+                    <span className="block">{CONTACT.meetingAddress.line1}</span>
+                    <span className="block">{CONTACT.meetingAddress.line2}</span>
+                    <span className="block">{CONTACT.meetingAddress.line3}</span>
+                  </address>
+                </a>
               </li>
             </ul>
           </div>
@@ -76,38 +85,7 @@ function Footer() {
           </div>
         </div>
 
-        <p className="mt-10 text-[11px] leading-relaxed text-slate-500 dark:text-slate-500">
-          Bildnachweise: Konstanz ©{" "}
-          <a
-            href="https://commons.wikimedia.org/wiki/User:SimonWaldherr"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline transition hover:text-brand-600 dark:hover:text-brand-300"
-          >
-            SimonWaldherr
-          </a>
-          ; Schloss Neuschwanstein ©{" "}
-          <a
-            href="https://commons.wikimedia.org/wiki/User:Carsten_Steger"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline transition hover:text-brand-600 dark:hover:text-brand-300"
-          >
-            Carsten Steger
-          </a>
-          {" "}/{" "}
-          <a
-            href="https://creativecommons.org/licenses/by-sa/4.0/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline transition hover:text-brand-600 dark:hover:text-brand-300"
-          >
-            CC BY-SA 4.0
-          </a>
-          {" "}via Wikimedia Commons.
-        </p>
-
-        <div className="mt-6 flex flex-col gap-4 border-t border-slate-200/80 pt-8 text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400 md:flex-row md:items-center md:justify-between">
+        <div className="mt-12 flex flex-col gap-4 border-t border-slate-200/80 pt-8 text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400 md:flex-row md:items-center md:justify-between">
           <p>&copy; {CONTACT.pilotName}</p>
           <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <li>
@@ -132,6 +110,14 @@ function Footer() {
                 className="transition hover:text-brand-600 dark:hover:text-brand-300"
               >
                 Cookie-Einstellungen
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/bildnachweise"
+                className="transition hover:text-brand-600 dark:hover:text-brand-300"
+              >
+                Bildnachweise
               </Link>
             </li>
           </ul>

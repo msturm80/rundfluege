@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 type ContactPayload = {
   name?: string;
@@ -12,7 +12,7 @@ type ContactPayload = {
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const HONEYPOT_FIELD = "company"; // not exposed in UI; bots that fill it get rejected
+const HONEYPOT_FIELD = "company";
 
 const passengersLabel = (count: string | undefined, lang: "de" | "en") => {
   const n = count ?? "2";
@@ -35,7 +35,7 @@ const buildBody = (p: ContactPayload, lang: "de" | "en") => {
     `Nachricht:`,
     p.message ?? "",
     ``,
-    `— gesendet via rundfluege-bodensee.de`,
+    `— gesendet via bodensee-rundflug.com`,
   ];
   const linesEn = [
     `Hi Hans,`,
@@ -51,7 +51,7 @@ const buildBody = (p: ContactPayload, lang: "de" | "en") => {
     `Message:`,
     p.message ?? "",
     ``,
-    `— sent via rundfluege-bodensee.de`,
+    `— sent via bodensee-rundflug.com`,
   ];
   return (lang === "en" ? linesEn : linesDe).join("\n");
 };
@@ -80,42 +80,37 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: "Message too long" });
   }
 
-  const host = process.env.SMTP_HOST;
-  const port = Number(process.env.SMTP_PORT) || 587;
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
-  const secure = process.env.SMTP_SECURE === "true" || port === 465;
-  const from = process.env.MAIL_FROM ?? user;
+  const apiKey = process.env.RESEND_API_KEY;
+  const from =
+    process.env.MAIL_FROM ?? "Rundflüge Bodensee <noreply@bodensee-rundflug.com>";
   const to = process.env.INQUIRY_EMAIL ?? "test@sturms.org";
 
-  if (!host || !user || !pass || !from) {
-    console.error("SMTP env vars missing");
+  if (!apiKey) {
+    console.error("RESEND_API_KEY missing");
     return res.status(500).json({ error: "Server not configured" });
   }
 
-  const transporter = nodemailer.createTransport({
-    host,
-    port,
-    secure,
-    auth: { user, pass },
-  });
-
+  const resend = new Resend(apiKey);
   const subject =
     language === "en"
       ? `Sightseeing flight inquiry from ${name}`
       : `Rundflug-Anfrage von ${name}`;
 
   try {
-    await transporter.sendMail({
+    const { data, error } = await resend.emails.send({
       from,
-      to,
+      to: [to],
       replyTo: email,
       subject,
       text: buildBody(body, language),
     });
-    return res.status(200).json({ ok: true });
+    if (error) {
+      console.error("Resend error", error);
+      return res.status(502).json({ error: "Mail delivery failed" });
+    }
+    return res.status(200).json({ ok: true, id: data?.id });
   } catch (err) {
-    console.error("sendMail failed", err);
+    console.error("send failed", err);
     return res.status(502).json({ error: "Mail delivery failed" });
   }
 }

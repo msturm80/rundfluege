@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Maximize2 } from "lucide-react";
+import { Maximize2, RotateCw } from "lucide-react";
 import { useI18n } from "../../i18n/I18nContext";
 import { galleryPhotos } from "../../config/images";
 import Lightbox from "../ui/Lightbox";
@@ -27,6 +27,12 @@ function Gallery() {
           </h2>
           <p className="mt-5 text-base leading-relaxed text-slate-600 dark:text-slate-300 md:text-lg">
             {t("gallery.subtitle")}
+          </p>
+          <p className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700 ring-1 ring-brand-200/60 dark:bg-brand-900/30 dark:text-brand-200 dark:ring-brand-700/40 sm:hidden">
+            <RotateCw className="h-3.5 w-3.5" />
+            {language === "de"
+              ? "Tipp: Handy drehen für Vollbild · seitwärts wischen"
+              : "Tip: rotate phone for fullscreen · swipe sideways"}
           </p>
         </div>
 

@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { useI18n } from "../../i18n/I18nContext";
 import { CONTACT, buildWhatsappUrl } from "../../config/contact";
 import { PREFILL_ROUTE_EVENT } from "../../lib/prefillEvent";
+import { meetingMapsUrl } from "../../lib/maps";
 import MapsConsent from "../ui/MapsConsent";
 
 type FormState = {
@@ -490,11 +491,19 @@ function Contact() {
                     <p className="text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">
                       {t("contact.details.meetingPoint")}
                     </p>
-                    <address className="mt-1 not-italic text-sm leading-relaxed text-slate-700 dark:text-slate-200">
-                      <span className="block">{CONTACT.meetingAddress.line1}</span>
-                      <span className="block">{CONTACT.meetingAddress.line2}</span>
-                      <span className="block">{CONTACT.meetingAddress.line3}</span>
-                    </address>
+                    <a
+                      href={meetingMapsUrl()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Treffpunkt auf Google Maps öffnen"
+                      className="group mt-1 inline-block transition hover:text-brand-600 dark:hover:text-brand-300"
+                    >
+                      <address className="not-italic text-sm leading-relaxed text-slate-700 underline decoration-slate-300 decoration-1 underline-offset-4 transition group-hover:decoration-brand-500 dark:text-slate-200 dark:decoration-slate-600">
+                        <span className="block">{CONTACT.meetingAddress.line1}</span>
+                        <span className="block">{CONTACT.meetingAddress.line2}</span>
+                        <span className="block">{CONTACT.meetingAddress.line3}</span>
+                      </address>
+                    </a>
                   </div>
                 </li>
 

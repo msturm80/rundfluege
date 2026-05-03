@@ -71,6 +71,9 @@
 
 input[type="date"] {
   color-scheme: light;
+  /* iOS Safari otherwise sets a content-based min-width that overflows */
+  min-width: 0;
+  max-width: 100%;
 }
 .dark input[type="date"] {
   color-scheme: dark;
