@@ -1,10 +1,20 @@
+import { useEffect, useState } from "react";
 import { Calendar, Clock, Euro, Plane, Plus, Users } from "lucide-react";
 import { useI18n } from "../../i18n/I18nContext";
 import { CONTACT, buildWhatsappUrl } from "../../config/contact";
 import { PHOTOS } from "../../config/images";
+import { isQuietHoursBerlin } from "../../lib/quietHours";
 
 function Booking() {
   const { t, language } = useI18n();
+  const [quiet, setQuiet] = useState<boolean>(false);
+
+  useEffect(() => {
+    const update = () => setQuiet(isQuietHoursBerlin());
+    update();
+    const id = window.setInterval(update, 60_000);
+    return () => window.clearInterval(id);
+  }, []);
 
   const whatsappMessage =
     language === "de"
@@ -116,14 +126,16 @@ function Booking() {
               >
                 {t("booking.cta")}
               </a>
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
-              >
-                {t("booking.ctaWhatsapp")}
-              </a>
+              {!quiet && (
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+                >
+                  {t("booking.ctaWhatsapp")}
+                </a>
+              )}
             </div>
           </div>
 
