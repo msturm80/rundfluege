@@ -44,11 +44,13 @@ function Hero() {
           </p>
 
           <h1
-            className="mt-6 font-display text-4xl font-bold leading-[1.05] tracking-tight text-white drop-shadow-sm opacity-0 animate-fade-up sm:text-5xl md:text-6xl lg:text-7xl"
+            className="mt-6 font-display text-4xl font-bold leading-[1.05] tracking-tight text-white drop-shadow-sm opacity-0 animate-fade-up [text-wrap:balance] sm:text-5xl md:text-6xl"
             style={{ animationDelay: "0.2s", animationFillMode: "forwards" }}
           >
-            {t("hero.title")}{" "}
-            <span className="italic text-brand-300">{t("hero.titleAccent")}</span>
+            {t("hero.title")}
+            <span className="mt-1 block italic text-brand-300 md:mt-2">
+              {t("hero.titleAccent")}
+            </span>
           </h1>
 
           <p
