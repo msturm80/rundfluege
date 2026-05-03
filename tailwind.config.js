@@ -28,6 +28,7 @@ export default {
         "fade-up": "fadeUp 0.8s ease-out forwards",
         "slow-pan": "slowPan 30s ease-in-out infinite alternate",
         float: "float 6s ease-in-out infinite",
+        progress: "progress var(--progress-duration, 5000ms) linear forwards",
       },
       keyframes: {
         fadeIn: {
@@ -45,6 +46,10 @@ export default {
         float: {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-12px)" },
+        },
+        progress: {
+          "0%": { transform: "scaleX(0)" },
+          "100%": { transform: "scaleX(1)" },
         },
       },
     },
