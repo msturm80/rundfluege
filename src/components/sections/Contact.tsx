@@ -370,7 +370,13 @@ function Contact() {
                         placeholder=" "
                         min={new Date().toISOString().slice(0, 10)}
                         value={values.date}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          handleChange(e);
+                          // Close native picker after selection on desktop browsers
+                          // that otherwise keep the popover open.
+                          const el = e.target;
+                          window.setTimeout(() => el.blur(), 0);
+                        }}
                         disabled={isLocked}
                         className="peer input-field cursor-pointer pr-11"
                       />
