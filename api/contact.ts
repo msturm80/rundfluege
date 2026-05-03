@@ -81,8 +81,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const from =
-    process.env.MAIL_FROM ?? "Rundflüge Bodensee <noreply@bodensee-rundflug.com>";
+  // Hardcoded for diagnosis: bypass any MAIL_FROM env-var issues by using
+  // Resend's always-valid sandbox sender. Restore once we confirm sending works.
+  const from = "onboarding@resend.dev";
   const to = process.env.INQUIRY_EMAIL ?? "martin@sturms.org";
 
   if (!apiKey) {
