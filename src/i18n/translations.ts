@@ -142,6 +142,7 @@ export const translations = {
         whatsapp: "Lieber per WhatsApp",
         required: "Pflichtfeld",
         invalidEmail: "Bitte eine gültige E-Mail eingeben",
+        invalidPhone: "Bitte eine gültige Telefonnummer eingeben",
       },
       details: {
         meetingPoint: "Treffpunkt",
@@ -307,6 +308,7 @@ export const translations = {
         whatsapp: "Prefer WhatsApp",
         required: "Required field",
         invalidEmail: "Please enter a valid email address",
+        invalidPhone: "Please enter a valid phone number",
       },
       details: {
         meetingPoint: "Meeting point",

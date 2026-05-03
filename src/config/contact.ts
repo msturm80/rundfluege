@@ -2,8 +2,8 @@ export const CONTACT = {
   pilotName: "Hans Weiss",
   pilotEmail: "weiss-hans@t-online.de",
   inquiryEmail: "test@sturms.org",
-  whatsappNumber: "+4901624271539",
-  whatsappDigits: "4901624271539",
+  whatsappNumber: "+491702220444",
+  whatsappDigits: "491702220444",
   // Treffpunkt am Flughafen Friedrichshafen (Meeting point)
   meetingAddress: {
     line1: "Am Flughafen",

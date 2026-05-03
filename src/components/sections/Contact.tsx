@@ -30,6 +30,8 @@ type FormErrors = Partial<Record<keyof FormState, string>>;
 type Status = "idle" | "sending" | "success" | "error";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_DIGITS_REGEX = /^\+?\d{7,15}$/;
+const cleanPhone = (raw: string) => raw.replace(/[\s\-().\/]/g, "");
 
 const initialState: FormState = {
   name: "",
@@ -82,6 +84,8 @@ function Contact() {
     else if (!EMAIL_REGEX.test(values.email.trim()))
       next.email = t("contact.form.invalidEmail");
     if (!values.phone.trim()) next.phone = t("contact.form.required");
+    else if (!PHONE_DIGITS_REGEX.test(cleanPhone(values.phone)))
+      next.phone = t("contact.form.invalidPhone");
     if (!values.message.trim()) next.message = t("contact.form.required");
     return next;
   };

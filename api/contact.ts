@@ -12,6 +12,8 @@ type ContactPayload = {
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_RE = /^\+?\d{7,15}$/;
+const cleanPhone = (raw: string) => raw.replace(/[\s\-().\/]/g, "");
 const HONEYPOT_FIELD = "company";
 
 const passengersLabel = (count: string | undefined, lang: "de" | "en") => {
@@ -75,6 +77,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
   if (!EMAIL_RE.test(email.trim())) {
     return res.status(400).json({ error: "Invalid email" });
+  }
+  if (!PHONE_RE.test(cleanPhone(phone.trim()))) {
+    return res.status(400).json({ error: "Invalid phone" });
   }
   if (message.length > 5000) {
     return res.status(400).json({ error: "Message too long" });
