@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Maximize2, RotateCw } from "lucide-react";
 import { useI18n } from "../../i18n/I18nContext";
 import { galleryPhotos } from "../../config/images";
+import { Events, trackEvent } from "../../lib/analytics";
 import Lightbox from "../ui/Lightbox";
 
 function Gallery() {
@@ -44,7 +45,10 @@ function Gallery() {
               <button
                 key={photo.id}
                 type="button"
-                onClick={() => setOpenIndex(index)}
+                onClick={() => {
+                  setOpenIndex(index);
+                  trackEvent(Events.galleryOpen, { id: photo.id, index });
+                }}
                 aria-label={t("gallery.open")}
                 className={`group relative overflow-hidden rounded-2xl bg-slate-200 ring-1 ring-slate-200/60 transition-shadow duration-300 hover:shadow-2xl hover:shadow-slate-900/15 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 dark:bg-slate-800 dark:ring-slate-800 dark:hover:shadow-black/40 dark:focus:ring-offset-slate-950 ${
                   isFeatured

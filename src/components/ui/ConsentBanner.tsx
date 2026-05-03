@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Cookie, X } from "lucide-react";
 import { grantAnalyticsConsent, grantMapsConsent } from "../../lib/consent";
+import { Events, trackEvent } from "../../lib/analytics";
 
 const SEEN_KEY = "consentBannerSeen";
 const SHOW_DELAY_MS = 800;
@@ -50,6 +51,12 @@ function ConsentBanner() {
   const handleAccept = () => {
     grantMapsConsent();
     grantAnalyticsConsent();
+    // gtag is injected as a side effect of grantAnalyticsConsent; deferred so
+    // the script has a tick to register before we send the consent event.
+    window.setTimeout(
+      () => trackEvent(Events.consentGrant, { scope: "all" }),
+      0,
+    );
     close();
   };
 

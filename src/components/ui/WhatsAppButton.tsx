@@ -3,6 +3,7 @@ import { Mail, MessageCircle } from "lucide-react";
 import { useI18n } from "../../i18n/I18nContext";
 import { buildWhatsappUrl } from "../../config/contact";
 import { isQuietHoursBerlin } from "../../lib/quietHours";
+import { Events, trackEvent } from "../../lib/analytics";
 
 function WhatsAppButton() {
   const { language, t } = useI18n();
@@ -27,10 +28,15 @@ function WhatsAppButton() {
   const tooltip = quiet ? tooltipNight : tooltipDay;
 
   const scrollToContact = (e: MouseEvent<HTMLAnchorElement>) => {
+    trackEvent(Events.emailCtaClick, { source: "floating_quiet" });
     const target = document.getElementById("contact");
     if (!target) return;
     e.preventDefault();
     target.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const handleWhatsappClick = () => {
+    trackEvent(Events.whatsappClick, { source: "floating" });
   };
 
   return (
@@ -57,6 +63,7 @@ function WhatsAppButton() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={tooltipDay}
+          onClick={handleWhatsappClick}
           className="relative inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-xl shadow-emerald-900/25 ring-1 ring-white/30 transition-transform duration-200 hover:scale-105 hover:bg-[#1fbb5b] focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 sm:h-16 sm:w-16"
         >
           <span

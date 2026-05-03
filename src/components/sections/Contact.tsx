@@ -15,6 +15,7 @@ import { CONTACT, buildWhatsappUrl } from "../../config/contact";
 import { PREFILL_ROUTE_EVENT } from "../../lib/prefillEvent";
 import { meetingMapsUrl } from "../../lib/maps";
 import { isQuietHoursBerlin } from "../../lib/quietHours";
+import { Events, trackEvent } from "../../lib/analytics";
 import MapsConsent from "../ui/MapsConsent";
 
 type FormState = {
@@ -142,13 +143,19 @@ function Contact() {
       });
       if (res.status === 429) {
         setStatus("rateLimited");
+        trackEvent(Events.formSubmitRateLimited, { language });
         return;
       }
       if (!res.ok) throw new Error(`Request failed: ${res.status}`);
       setStatus("success");
+      trackEvent(Events.formSubmitSuccess, {
+        language,
+        passengers: values.passengers,
+      });
     } catch (err) {
       console.error("contact submit failed", err);
       setStatus("error");
+      trackEvent(Events.formSubmitError, { language });
     }
   };
 

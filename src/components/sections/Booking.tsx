@@ -4,6 +4,7 @@ import { useI18n } from "../../i18n/I18nContext";
 import { CONTACT, buildWhatsappUrl } from "../../config/contact";
 import { PHOTOS } from "../../config/images";
 import { isQuietHoursBerlin } from "../../lib/quietHours";
+import { Events, trackEvent } from "../../lib/analytics";
 
 function Booking() {
   const { t, language } = useI18n();
@@ -122,6 +123,7 @@ function Booking() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <a
                 href="#contact"
+                onClick={() => trackEvent(Events.bookingCtaPrimary)}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-black/20 transition hover:bg-brand-50 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
               >
                 {t("booking.cta")}
@@ -131,6 +133,7 @@ function Booking() {
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackEvent(Events.bookingCtaWhatsapp)}
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
                 >
                   {t("booking.ctaWhatsapp")}

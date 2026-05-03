@@ -11,6 +11,7 @@ import {
 import { useI18n } from "../../i18n/I18nContext";
 import { dispatchPrefillRoute } from "../../lib/prefillEvent";
 import { PHOTOS, type Photo } from "../../config/images";
+import { Events, trackEvent } from "../../lib/analytics";
 
 type LucideIcon = ComponentType<SVGProps<SVGSVGElement>>;
 
@@ -32,7 +33,8 @@ const ROUTES: RouteItem[] = [
 function RoutesSection() {
   const { t, language } = useI18n();
 
-  const handleRouteClick = (routeTitle: string) => {
+  const handleRouteClick = (routeKey: RouteKey, routeTitle: string) => {
+    trackEvent(Events.routeSelect, { route: routeKey, title: routeTitle });
     const message = t("routes.prefillTemplate").replace("{{route}}", routeTitle);
     dispatchPrefillRoute({ route: routeTitle, message });
     const target = document.getElementById("contact");
@@ -80,7 +82,7 @@ function RoutesSection() {
               <button
                 key={key}
                 type="button"
-                onClick={() => handleRouteClick(title)}
+                onClick={() => handleRouteClick(key, title)}
                 aria-label={`${requestLabel}: ${title}`}
                 style={style}
                 className="reveal group relative h-80 cursor-pointer rounded-2xl text-left text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-brand-500/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950 md:h-96"

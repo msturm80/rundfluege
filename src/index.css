@@ -71,9 +71,13 @@
 
 input[type="date"] {
   color-scheme: light;
-  /* iOS Safari otherwise sets a content-based min-width that overflows */
+  /* iOS Safari otherwise sizes itself to its content and bursts the layout */
   min-width: 0;
+  width: 100%;
   max-width: 100%;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
 }
 .dark input[type="date"] {
   color-scheme: dark;
@@ -86,10 +90,19 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
   opacity: 0;
 }
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+  min-height: 1.4em;
+}
 input[type="date"]::-webkit-datetime-edit {
   color: inherit;
+  padding: 0;
+  display: inline-block;
+  overflow: hidden;
 }
-input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
 input[type="date"]::-webkit-datetime-edit-text {
   color: inherit;
 }

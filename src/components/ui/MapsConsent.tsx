@@ -12,6 +12,7 @@ import {
   grantMapsConsent,
   hasMapsConsent,
 } from "../../lib/consent";
+import { Events, trackEvent } from "../../lib/analytics";
 
 function MapsConsent() {
   const [consent, setConsent] = useState<boolean>(false);
@@ -98,7 +99,10 @@ function MapsConsent() {
           <div className="mt-4 flex flex-col items-stretch gap-2 sm:flex-row sm:items-center">
             <button
               type="button"
-              onClick={grantMapsConsent}
+              onClick={() => {
+                grantMapsConsent();
+                trackEvent(Events.mapsConsent, { source: "inline" });
+              }}
               className="btn-primary inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm"
             >
               <ShieldCheck className="h-4 w-4" />
