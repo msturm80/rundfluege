@@ -107,22 +107,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
     if (error) {
       console.error("Resend error", error);
-      return res.status(502).json({
-        error: "Mail delivery failed",
-        reason: error.message,
-        name: error.name,
-        from,
-        keyMeta: {
-          present: Boolean(apiKey),
-          length: apiKey?.length ?? 0,
-          prefix: apiKey ? apiKey.slice(0, 3) : null,
-        },
-      });
+      return res.status(502).json({ error: "Mail delivery failed" });
     }
     return res.status(200).json({ ok: true, id: data?.id });
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
     console.error("send failed", err);
-    return res.status(502).json({ error: "Mail delivery failed", reason: message });
+    return res.status(502).json({ error: "Mail delivery failed" });
   }
 }
