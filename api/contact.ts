@@ -81,9 +81,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  // Hardcoded for diagnosis: bypass any MAIL_FROM env-var issues by using
-  // Resend's always-valid sandbox sender. Restore once we confirm sending works.
-  const from = "onboarding@resend.dev";
+  const from =
+    process.env.MAIL_FROM ?? "Rundflüge Bodensee <noreply@bodensee-rundflug.com>";
   const to = process.env.INQUIRY_EMAIL ?? "martin@sturms.org";
 
   if (!apiKey) {
@@ -107,16 +106,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
     if (error) {
       console.error("Resend error", error);
-      return res.status(502).json({
-        error: "Mail delivery failed",
-        reason: error.message,
-        name: error.name,
-      });
+      return res.status(502).json({ error: "Mail delivery failed" });
     }
     return res.status(200).json({ ok: true, id: data?.id });
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
     console.error("send failed", err);
-    return res.status(502).json({ error: "Mail delivery failed", reason: message });
+    return res.status(502).json({ error: "Mail delivery failed" });
   }
 }
