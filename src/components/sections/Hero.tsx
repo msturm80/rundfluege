@@ -33,7 +33,7 @@ function Hero() {
       />
 
       <div className="container-x relative w-full py-28 md:py-32">
-        <div className="mx-auto max-w-3xl text-center">
+        <div className="mx-auto max-w-3xl rounded-3xl bg-slate-950/30 px-6 py-10 text-center shadow-xl shadow-black/30 ring-1 ring-white/10 backdrop-blur-md sm:px-10 sm:py-12 md:px-14 md:py-14">
           <p
             className="flex items-center justify-center gap-3 text-xs font-semibold uppercase tracking-[0.25em] text-brand-200 opacity-0 animate-fade-up"
             style={{ animationDelay: "0.05s", animationFillMode: "forwards" }}

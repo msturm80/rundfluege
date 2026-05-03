@@ -103,6 +103,19 @@ export const PHOTOS: Record<string, Photo> = {
       en: "Alpine panorama – mountain rounds on clear days",
     },
   ),
+  neuschwanstein: photo(
+    "neuschwanstein",
+    2400,
+    1493,
+    {
+      de: "Schloss Neuschwanstein aus der Luft",
+      en: "Neuschwanstein Castle from the air",
+    },
+    {
+      de: "Schloss Neuschwanstein – Allgäu",
+      en: "Neuschwanstein Castle – Allgäu",
+    },
+  ),
 };
 
 export const PILOT_PHOTOS = {

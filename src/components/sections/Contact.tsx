@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import {
+  AlertCircle,
   Mail,
   Phone,
   MapPin,
@@ -10,7 +11,7 @@ import {
   Calendar,
 } from "lucide-react";
 import { useI18n } from "../../i18n/I18nContext";
-import { CONTACT, buildMailtoUrl, buildWhatsappUrl } from "../../config/contact";
+import { CONTACT, buildWhatsappUrl } from "../../config/contact";
 import { PREFILL_ROUTE_EVENT } from "../../lib/prefillEvent";
 
 type FormState = {
@@ -83,47 +84,7 @@ function Contact() {
     return next;
   };
 
-  const buildEmailBody = () => {
-    const passengersLabel = t(`contact.form.passengersOptions.${values.passengers}`);
-    if (language === "de") {
-      return [
-        `Hallo Hans,`,
-        ``,
-        `ich interessiere mich für einen Rundflug über den Bodensee.`,
-        ``,
-        `Name: ${values.name}`,
-        `E-Mail: ${values.email}`,
-        `Telefon: ${values.phone || "—"}`,
-        `Wunschtermin: ${values.date || "—"}`,
-        `Personen: ${passengersLabel}`,
-        ``,
-        `Nachricht:`,
-        values.message,
-        ``,
-        `Viele Grüße`,
-        values.name,
-      ].join("\n");
-    }
-    return [
-      `Hi Hans,`,
-      ``,
-      `I'm interested in a sightseeing flight over Lake Constance.`,
-      ``,
-      `Name: ${values.name}`,
-      `Email: ${values.email}`,
-      `Phone: ${values.phone || "—"}`,
-      `Preferred date: ${values.date || "—"}`,
-      `Passengers: ${passengersLabel}`,
-      ``,
-      `Message:`,
-      values.message,
-      ``,
-      `Kind regards,`,
-      values.name,
-    ].join("\n");
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const found = validate();
     if (Object.keys(found).length > 0) {
@@ -133,23 +94,18 @@ function Contact() {
     setErrors({});
     setStatus("sending");
 
-    const subject =
-      language === "de"
-        ? `Rundflug-Anfrage von ${values.name}`
-        : `Sightseeing flight inquiry from ${values.name}`;
-    const body = buildEmailBody();
-    const mailtoUrl = buildMailtoUrl(subject, body, CONTACT.inquiryEmail);
-
     try {
-      window.location.href = mailtoUrl;
-    } catch {
-      setStatus("error");
-      return;
-    }
-
-    window.setTimeout(() => {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...values, language }),
+      });
+      if (!res.ok) throw new Error(`Request failed: ${res.status}`);
       setStatus("success");
-    }, 1200);
+    } catch (err) {
+      console.error("contact submit failed", err);
+      setStatus("error");
+    }
   };
 
   const successWhatsappMessage =
@@ -421,6 +377,28 @@ function Contact() {
                       </p>
                     )}
                   </div>
+
+                  {/* Honeypot field — hidden from humans, bots will fill it. */}
+                  <input
+                    type="text"
+                    name="company"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="absolute left-[-9999px] h-0 w-0 opacity-0"
+                    onChange={() => undefined}
+                    value=""
+                  />
+
+                  {status === "error" && (
+                    <div
+                      role="alert"
+                      className="flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-700/60 dark:bg-red-900/30 dark:text-red-200"
+                    >
+                      <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
+                      <p>{t("contact.form.error")}</p>
+                    </div>
+                  )}
 
                   <div className="flex flex-col-reverse items-stretch gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-xs text-slate-500 dark:text-slate-400">

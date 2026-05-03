@@ -51,9 +51,9 @@ function App() {
       <main className="flex-1">
         <Hero />
         <About />
+        <RoutesSection />
         <Pilot />
         <Booking />
-        <RoutesSection />
         <Gallery />
         <Contact />
       </main>

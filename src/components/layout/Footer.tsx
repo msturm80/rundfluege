@@ -85,7 +85,7 @@ function Footer() {
         </div>
 
         <p className="mt-10 text-[11px] leading-relaxed text-slate-500 dark:text-slate-500">
-          Bildnachweis Konstanz: ©{" "}
+          Bildnachweise: Konstanz ©{" "}
           <a
             href="https://commons.wikimedia.org/wiki/User:SimonWaldherr"
             target="_blank"
@@ -93,8 +93,17 @@ function Footer() {
             className="underline transition hover:text-brand-600 dark:hover:text-brand-300"
           >
             SimonWaldherr
-          </a>{" "}
-          /{" "}
+          </a>
+          ; Schloss Neuschwanstein ©{" "}
+          <a
+            href="https://commons.wikimedia.org/wiki/User:Carsten_Steger"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline transition hover:text-brand-600 dark:hover:text-brand-300"
+          >
+            Carsten Steger
+          </a>
+          {" "}/{" "}
           <a
             href="https://creativecommons.org/licenses/by-sa/4.0/"
             target="_blank"

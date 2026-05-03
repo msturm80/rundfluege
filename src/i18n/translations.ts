@@ -45,7 +45,7 @@ export const translations = {
         "Gerne erzähle ich Ihnen unterwegs mehr über die Region und die Aussicht – oder Sie lehnen sich einfach zurück und genießen diesen besonderen Moment.",
       stats: {
         years: { value: "50+", label: "Jahre Flugerfahrung" },
-        flights: { value: "1000+", label: "Rundflüge" },
+        flights: { value: "10.000", label: "Flugstunden" },
         aircraft: { value: "Cessna", label: "D-EIZY" },
       },
     },
@@ -79,38 +79,33 @@ export const translations = {
         "Ihre persönliche Wunschroute stimme ich gerne individuell mit Ihnen ab.",
       requestThis: "Diese Route anfragen",
       durationLabel: "Flugdauer",
+      priceLabel: "Preis",
       prefillTemplate:
-        "Hallo Hans,\n\nich würde gerne die Route „{{route}}\" fliegen. Können wir das einplanen?\n\nVielen Dank!",
+        "Hallo Hans,\n\nich würde gerne den „{{route}}\" buchen. Können wir das einplanen?\n\nVielen Dank!",
       items: {
-        zeppelin: {
-          title: "Friedrichshafen",
-          body: "Die Heimat der Zeppeline und ihre spannende Geschichte aus der Luft.",
-          duration: "ca. 15 Min",
-        },
-        lindau: {
-          title: "Lindau",
-          body: "Lindau mit seinem berühmten Hafenensemble und Inselcharakter.",
-          duration: "ca. 20 Min",
-        },
-        konstanz: {
-          title: "Konstanz",
-          body: "Konstanz und das weite Seepanorama – bei klarer Sicht mit Alpenkulisse.",
+        klein: {
+          title: "Kleiner Bodenseerundflug",
+          body: "Meersburg · Pfahlbauten · Mainau · Konstanz",
           duration: "ca. 35 Min",
+          price: "200 €",
         },
-        alps: {
-          title: "Alpen",
-          body: "Unvergessliche Alpenrundflüge entlang von Gipfeln, Tälern und Gletschern.",
+        gross: {
+          title: "Großer Bodenseerundflug",
+          body: "Pfänder · Lindau · Mainau · Überlingen · Mettau · Reichenau",
           duration: "ca. 50 Min",
+          price: "250 €",
         },
-        islands: {
-          title: "Inseln",
-          body: "Mainau, Reichenau und Lindau – die schönsten Inseln des Bodensees von oben.",
-          duration: "ca. 30 Min",
+        alpen: {
+          title: "Alpenrundflug",
+          body: "Bregenzer Wald · Montafon · Arlberg · Zürs · Lech",
+          duration: "ca. 80 Min",
+          price: "400 €",
         },
-        individuell: {
-          title: "Individuell",
-          body: "Stellen Sie Ihre eigene Wunschroute zusammen — wir planen sie gemeinsam.",
-          duration: "nach Wunsch",
+        neuschwanstein: {
+          title: "Schloss Neuschwanstein",
+          body: "Allgäuer Alpen · Schloss Neuschwanstein · Kempten",
+          duration: "ca. 80 Min",
+          price: "400 €",
         },
       },
     },
@@ -215,7 +210,7 @@ export const translations = {
         "I'm happy to share stories about the region and the views as we go — or you simply lean back and enjoy the moment.",
       stats: {
         years: { value: "50+", label: "Years of flight experience" },
-        flights: { value: "1000+", label: "Sightseeing flights" },
+        flights: { value: "10,000", label: "Flight hours" },
         aircraft: { value: "Cessna", label: "D-EIZY" },
       },
     },
@@ -249,38 +244,33 @@ export const translations = {
         "Your personal wish-route — I'll be glad to plan it together with you.",
       requestThis: "Request this route",
       durationLabel: "Flight time",
+      priceLabel: "Price",
       prefillTemplate:
-        "Hi Hans,\n\nI'd love to take the \"{{route}}\" route. Could we plan that together?\n\nThanks!",
+        "Hi Hans,\n\nI'd love to book the \"{{route}}\" flight. Could we plan that together?\n\nThanks!",
       items: {
-        zeppelin: {
-          title: "Friedrichshafen",
-          body: "Home of the Zeppelins and their captivating history — from the air.",
-          duration: "~15 min",
-        },
-        lindau: {
-          title: "Lindau",
-          body: "Lindau with its famous harbour ensemble and unique island character.",
-          duration: "~20 min",
-        },
-        konstanz: {
-          title: "Konstanz",
-          body: "Konstanz and the wide lake panorama — with alpine views on a clear day.",
+        klein: {
+          title: "Short Lake Constance Tour",
+          body: "Meersburg · Pile dwellings · Mainau · Konstanz",
           duration: "~35 min",
+          price: "€200",
         },
-        alps: {
-          title: "Alps",
-          body: "Unforgettable alpine rounds along peaks, valleys and glaciers.",
+        gross: {
+          title: "Grand Lake Constance Tour",
+          body: "Pfänder · Lindau · Mainau · Überlingen · Mettau · Reichenau",
           duration: "~50 min",
+          price: "€250",
         },
-        islands: {
-          title: "Islands",
-          body: "Mainau, Reichenau and Lindau — Lake Constance's most beautiful islands from above.",
-          duration: "~30 min",
+        alpen: {
+          title: "Alpine Tour",
+          body: "Bregenzerwald · Montafon · Arlberg · Zürs · Lech",
+          duration: "~80 min",
+          price: "€400",
         },
-        individuell: {
-          title: "Custom route",
-          body: "Compose your own dream route — we plan it together.",
-          duration: "on request",
+        neuschwanstein: {
+          title: "Neuschwanstein Castle",
+          body: "Allgäu Alps · Neuschwanstein Castle · Kempten",
+          duration: "~80 min",
+          price: "€400",
         },
       },
     },
