@@ -83,7 +83,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const apiKey = process.env.RESEND_API_KEY;
   const from =
     process.env.MAIL_FROM ?? "Rundflüge Bodensee <noreply@bodensee-rundflug.com>";
-  const to = process.env.INQUIRY_EMAIL ?? "test@sturms.org";
+  const to = process.env.INQUIRY_EMAIL ?? "martin@sturms.org";
 
   if (!apiKey) {
     console.error("RESEND_API_KEY missing");
