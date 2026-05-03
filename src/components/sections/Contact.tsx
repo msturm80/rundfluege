@@ -14,6 +14,7 @@ import { useI18n } from "../../i18n/I18nContext";
 import { CONTACT, buildWhatsappUrl } from "../../config/contact";
 import { PREFILL_ROUTE_EVENT } from "../../lib/prefillEvent";
 import { meetingMapsUrl } from "../../lib/maps";
+import { isQuietHoursBerlin } from "../../lib/quietHours";
 import MapsConsent from "../ui/MapsConsent";
 
 type FormState = {
@@ -48,6 +49,14 @@ function Contact() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [status, setStatus] = useState<Status>("idle");
   const messageRef = useRef<HTMLTextAreaElement | null>(null);
+  const [quiet, setQuiet] = useState<boolean>(false);
+
+  useEffect(() => {
+    const update = () => setQuiet(isQuietHoursBerlin());
+    update();
+    const id = window.setInterval(update, 60_000);
+    return () => window.clearInterval(id);
+  }, []);
 
   useEffect(() => {
     const handlePrefill = (event: CustomEvent<{ route: string; message: string }>) => {
@@ -242,20 +251,22 @@ function Contact() {
                   <p className="font-display text-xl font-semibold leading-snug md:text-2xl">
                     {t("contact.form.success")}
                   </p>
-                  <div className="w-full border-t border-emerald-200/70 pt-4 dark:border-emerald-700/40">
-                    <p className="text-sm text-emerald-900/80 dark:text-emerald-100/80">
-                      {noteText}
-                    </p>
-                    <a
-                      href={buildWhatsappUrl(successWhatsappMessage)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-3 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1fbb5b] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366]/50 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900"
-                    >
-                      <MessageCircle className="h-4 w-4" />
-                      {t("common.whatsapp")}
-                    </a>
-                  </div>
+                  {!quiet && (
+                    <div className="w-full border-t border-emerald-200/70 pt-4 dark:border-emerald-700/40">
+                      <p className="text-sm text-emerald-900/80 dark:text-emerald-100/80">
+                        {noteText}
+                      </p>
+                      <a
+                        href={buildWhatsappUrl(successWhatsappMessage)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1fbb5b] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366]/50 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900"
+                      >
+                        <MessageCircle className="h-4 w-4" />
+                        {t("common.whatsapp")}
+                      </a>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <form
@@ -585,25 +596,27 @@ function Contact() {
                   </div>
                 </li>
 
-                <li className="flex items-start gap-4">
-                  <MessageCircle
-                    strokeWidth={1.6}
-                    className="mt-1 h-7 w-7 flex-shrink-0 text-[#1fbb5b] dark:text-[#4be38c]"
-                  />
-                  <div className="min-w-0">
-                    <p className="text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                      {t("common.whatsapp")}
-                    </p>
-                    <a
-                      href={buildWhatsappUrl(detailsWhatsappMessage)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-1 inline-flex items-center gap-1.5 font-medium text-slate-900 transition hover:text-[#1fbb5b] dark:text-white dark:hover:text-[#4be38c]"
-                    >
-                      {t("contact.form.whatsapp")}
-                    </a>
-                  </div>
-                </li>
+                {!quiet && (
+                  <li className="flex items-start gap-4">
+                    <MessageCircle
+                      strokeWidth={1.6}
+                      className="mt-1 h-7 w-7 flex-shrink-0 text-[#1fbb5b] dark:text-[#4be38c]"
+                    />
+                    <div className="min-w-0">
+                      <p className="text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+                        {t("common.whatsapp")}
+                      </p>
+                      <a
+                        href={buildWhatsappUrl(detailsWhatsappMessage)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-1 inline-flex items-center gap-1.5 font-medium text-slate-900 transition hover:text-[#1fbb5b] dark:text-white dark:hover:text-[#4be38c]"
+                      >
+                        {t("contact.form.whatsapp")}
+                      </a>
+                    </div>
+                  </li>
+                )}
               </ul>
             </div>
           </aside>
