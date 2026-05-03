@@ -9,12 +9,16 @@ import {
 } from "../../lib/consent";
 
 const MEETING_ADDRESS = `${CONTACT.meetingAddress.line1}, ${CONTACT.meetingAddress.line2}, ${CONTACT.meetingAddress.line3}`;
+const MEETING_LAT = 47.667308;
+const MEETING_LNG = 9.511404;
+const MEETING_ZOOM = 17;
+const MEETING_COORDS = `${MEETING_LAT},${MEETING_LNG}`;
 
 const buildMapEmbedUrl = (): string =>
-  `https://www.google.com/maps?q=${encodeURIComponent(MEETING_ADDRESS)}&output=embed`;
+  `https://www.google.com/maps?q=${MEETING_COORDS}&ll=${MEETING_COORDS}&z=${MEETING_ZOOM}&output=embed`;
 
 const buildDirectionsUrl = (): string =>
-  `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(MEETING_ADDRESS)}`;
+  `https://www.google.com/maps/dir/?api=1&destination=${MEETING_COORDS}`;
 
 function MapsConsent() {
   const [consent, setConsent] = useState<boolean>(false);
