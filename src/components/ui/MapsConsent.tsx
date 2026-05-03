@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Map, MapPin, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Map, MapPin, Navigation, ShieldCheck } from "lucide-react";
 import { CONTACT } from "../../config/contact";
 import {
   MAPS_CONSENT_EVENT,
@@ -8,12 +8,13 @@ import {
   hasMapsConsent,
 } from "../../lib/consent";
 
-const buildMapEmbedUrl = (): string => {
-  const q = encodeURIComponent(
-    `${CONTACT.meetingAddress.line1}, ${CONTACT.meetingAddress.line2}, ${CONTACT.meetingAddress.line3}`,
-  );
-  return `https://www.google.com/maps?q=${q}&output=embed`;
-};
+const MEETING_ADDRESS = `${CONTACT.meetingAddress.line1}, ${CONTACT.meetingAddress.line2}, ${CONTACT.meetingAddress.line3}`;
+
+const buildMapEmbedUrl = (): string =>
+  `https://www.google.com/maps?q=${encodeURIComponent(MEETING_ADDRESS)}&output=embed`;
+
+const buildDirectionsUrl = (): string =>
+  `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(MEETING_ADDRESS)}`;
 
 function MapsConsent() {
   const [consent, setConsent] = useState<boolean>(false);
@@ -25,16 +26,37 @@ function MapsConsent() {
     return () => window.removeEventListener(MAPS_CONSENT_EVENT, onChange);
   }, []);
 
+  const directionsButton = (
+    <a
+      href={buildDirectionsUrl()}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center justify-center gap-2 rounded-full border border-brand-200 bg-white px-5 py-2.5 text-sm font-semibold text-brand-700 shadow-sm transition hover:bg-brand-50 hover:shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 dark:border-slate-700 dark:bg-slate-800 dark:text-brand-200 dark:hover:bg-slate-700 dark:focus-visible:ring-offset-slate-900"
+    >
+      <Navigation className="h-4 w-4" />
+      Route planen
+    </a>
+  );
+
   if (consent) {
     return (
-      <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm dark:border-slate-800">
-        <iframe
-          title="Karte – Treffpunkt am Flughafen Friedrichshafen"
-          src={buildMapEmbedUrl()}
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          className="block h-72 w-full md:h-96"
-        />
+      <div className="space-y-3">
+        <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm dark:border-slate-800">
+          <iframe
+            title="Karte – Treffpunkt am Flughafen Friedrichshafen"
+            src={buildMapEmbedUrl()}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="block h-72 w-full md:h-96"
+          />
+        </div>
+        <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-600 dark:text-slate-300">
+          <span className="inline-flex items-center gap-1.5">
+            <MapPin className="h-4 w-4 text-brand-600 dark:text-brand-300" />
+            <span>{MEETING_ADDRESS}</span>
+          </span>
+          {directionsButton}
+        </div>
       </div>
     );
   }
@@ -64,6 +86,7 @@ function MapsConsent() {
               <ShieldCheck className="h-4 w-4" />
               Google Maps anzeigen
             </button>
+            {directionsButton}
             <Link
               to="/datenschutz"
               className="text-xs font-medium text-slate-500 transition hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-300 sm:ml-2"
@@ -73,8 +96,7 @@ function MapsConsent() {
           </div>
           <p className="mt-4 inline-flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
             <MapPin className="h-3.5 w-3.5" />
-            {CONTACT.meetingAddress.line1}, {CONTACT.meetingAddress.line2},{" "}
-            {CONTACT.meetingAddress.line3}
+            {MEETING_ADDRESS}
           </p>
         </div>
       </div>
