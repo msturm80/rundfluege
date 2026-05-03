@@ -112,6 +112,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         reason: error.message,
         name: error.name,
         from,
+        keyMeta: {
+          present: Boolean(apiKey),
+          length: apiKey?.length ?? 0,
+          prefix: apiKey ? apiKey.slice(0, 3) : null,
+        },
       });
     }
     return res.status(200).json({ ok: true, id: data?.id });
