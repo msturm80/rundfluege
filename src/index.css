@@ -102,3 +102,45 @@ input[type="date"]::-webkit-datetime-edit-text {
   opacity: 1;
   transform: translateY(0);
 }
+
+.legal-prose h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  font-family: "Source Sans 3", "Source Sans Pro", ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: rgb(15 23 42);
+}
+.dark .legal-prose h2 {
+  color: rgb(248 250 252);
+}
+.legal-prose h2:first-of-type {
+  margin-top: 0;
+}
+.legal-prose p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+.legal-prose ul {
+  margin: 0 0 1rem 1.25rem;
+  list-style: disc;
+  line-height: 1.7;
+}
+.legal-prose ul li {
+  margin-bottom: 0.25rem;
+}
+.legal-prose a {
+  color: rgb(2 119 196);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.legal-prose a:hover {
+  color: rgb(3 96 159);
+}
+.dark .legal-prose a {
+  color: rgb(125 204 251);
+}
+.dark .legal-prose a:hover {
+  color: rgb(186 227 253);
+}

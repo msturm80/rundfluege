@@ -1,15 +1,20 @@
 export const CONTACT = {
   pilotName: "Hans Weiss",
   pilotEmail: "weiss-hans@t-online.de",
-  pilotPhone: "+49 170 2220444",
-  pilotPhoneTel: "+491702220444",
   inquiryEmail: "test@sturms.org",
   whatsappNumber: "+4901624271539",
   whatsappDigits: "4901624271539",
-  address: {
+  // Treffpunkt am Flughafen Friedrichshafen (Meeting point)
+  meetingAddress: {
     line1: "Am Flughafen",
     line2: "Gewerbegebiet Nordost 3",
     line3: "88046 Friedrichshafen",
+  },
+  // Anschrift gem. § 5 DDG (Impressum)
+  legalAddress: {
+    line1: "Wasenweg 5",
+    line2: "88074 Meckenbeuren",
+    line3: "Deutschland",
   },
   aircraft: "Cessna D-EIZY",
   priceBase: 300,

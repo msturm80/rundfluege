@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Menu, Plane, X } from "lucide-react";
 import { useI18n } from "../../i18n/I18nContext";
 import LanguageToggle from "../ui/LanguageToggle";
@@ -7,12 +8,12 @@ import ThemeToggle from "../ui/ThemeToggle";
 type NavItem = { href: string; key: string };
 
 const NAV_ITEMS: NavItem[] = [
-  { href: "#experience", key: "nav.experience" },
-  { href: "#pilot", key: "nav.pilot" },
-  { href: "#booking", key: "nav.booking" },
-  { href: "#routes", key: "nav.routes" },
-  { href: "#gallery", key: "nav.gallery" },
-  { href: "#contact", key: "nav.contact" },
+  { href: "/#experience", key: "nav.experience" },
+  { href: "/#routes", key: "nav.routes" },
+  { href: "/#pilot", key: "nav.pilot" },
+  { href: "/#booking", key: "nav.booking" },
+  { href: "/#gallery", key: "nav.gallery" },
+  { href: "/#contact", key: "nav.contact" },
 ];
 
 function Header() {
@@ -47,8 +48,8 @@ function Header() {
   return (
     <header className={headerShellClass}>
       <div className="container-x flex h-16 items-center justify-between gap-4 md:h-20">
-        <a
-          href="#top"
+        <Link
+          to="/"
           className="group flex items-center gap-3 focus:outline-none"
           aria-label="Rundflüge Bodensee"
         >
@@ -56,7 +57,7 @@ function Header() {
           <span className="font-display text-lg font-bold tracking-tight text-slate-900 dark:text-white md:text-xl">
             Rundflüge Bodensee
           </span>
-        </a>
+        </Link>
 
         <nav className="hidden md:flex" aria-label="Primary">
           <ul className="flex items-center gap-1">
@@ -79,7 +80,7 @@ function Header() {
           </div>
           <ThemeToggle />
           <a
-            href="#contact"
+            href="/#contact"
             className="btn-primary hidden px-4 py-2 text-xs lg:inline-flex"
           >
             {t("nav.bookNow")}
@@ -120,7 +121,7 @@ function Header() {
               ))}
             </ul>
             <a
-              href="#contact"
+              href="/#contact"
               onClick={closeMobile}
               className="btn-primary mt-2 w-full"
             >

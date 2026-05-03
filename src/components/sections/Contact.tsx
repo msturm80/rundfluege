@@ -2,7 +2,6 @@ import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "r
 import {
   AlertCircle,
   Mail,
-  Phone,
   MapPin,
   Send,
   MessageCircle,
@@ -10,9 +9,11 @@ import {
   Loader2,
   Calendar,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useI18n } from "../../i18n/I18nContext";
 import { CONTACT, buildWhatsappUrl } from "../../config/contact";
 import { PREFILL_ROUTE_EVENT } from "../../lib/prefillEvent";
+import MapsConsent from "../ui/MapsConsent";
 
 type FormState = {
   name: string;
@@ -400,6 +401,37 @@ function Contact() {
                     </div>
                   )}
 
+                  <p className="text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+                    {language === "de" ? (
+                      <>
+                        Mit dem Absenden des Formulars erklären Sie sich damit
+                        einverstanden, dass Ihre Angaben zur Bearbeitung Ihrer
+                        Anfrage verarbeitet werden. Weitere Informationen finden
+                        Sie in der{" "}
+                        <Link
+                          to="/datenschutz"
+                          className="underline transition hover:text-brand-600 dark:hover:text-brand-300"
+                        >
+                          Datenschutzerklärung
+                        </Link>
+                        .
+                      </>
+                    ) : (
+                      <>
+                        By submitting this form you agree that your information
+                        will be processed to handle your inquiry. For details
+                        see our{" "}
+                        <Link
+                          to="/datenschutz"
+                          className="underline transition hover:text-brand-600 dark:hover:text-brand-300"
+                        >
+                          privacy policy
+                        </Link>
+                        .
+                      </>
+                    )}
+                  </p>
+
                   <div className="flex flex-col-reverse items-stretch gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-xs text-slate-500 dark:text-slate-400">
                       <span aria-hidden="true" className="text-red-500">*</span>{" "}
@@ -450,24 +482,6 @@ function Contact() {
                 </li>
 
                 <li className="flex items-start gap-4">
-                  <Phone
-                    strokeWidth={1.6}
-                    className="mt-1 h-7 w-7 flex-shrink-0 text-brand-600 dark:text-brand-300"
-                  />
-                  <div className="min-w-0">
-                    <p className="text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                      {t("contact.details.phone")}
-                    </p>
-                    <a
-                      href={`tel:${CONTACT.pilotPhoneTel}`}
-                      className="mt-1 block font-medium text-slate-900 transition hover:text-brand-600 dark:text-white dark:hover:text-brand-300"
-                    >
-                      {CONTACT.pilotPhone}
-                    </a>
-                  </div>
-                </li>
-
-                <li className="flex items-start gap-4">
                   <MapPin
                     strokeWidth={1.6}
                     className="mt-1 h-7 w-7 flex-shrink-0 text-brand-600 dark:text-brand-300"
@@ -477,9 +491,9 @@ function Contact() {
                       {t("contact.details.meetingPoint")}
                     </p>
                     <address className="mt-1 not-italic text-sm leading-relaxed text-slate-700 dark:text-slate-200">
-                      <span className="block">{CONTACT.address.line1}</span>
-                      <span className="block">{CONTACT.address.line2}</span>
-                      <span className="block">{CONTACT.address.line3}</span>
+                      <span className="block">{CONTACT.meetingAddress.line1}</span>
+                      <span className="block">{CONTACT.meetingAddress.line2}</span>
+                      <span className="block">{CONTACT.meetingAddress.line3}</span>
                     </address>
                   </div>
                 </li>
@@ -506,6 +520,10 @@ function Contact() {
               </ul>
             </div>
           </aside>
+        </div>
+
+        <div className="reveal mt-10">
+          <MapsConsent />
         </div>
       </div>
     </section>

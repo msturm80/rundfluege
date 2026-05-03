@@ -1,16 +1,17 @@
-import { Plane, Mail, Phone, MapPin, Heart } from "lucide-react";
+import { Plane, Mail, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useI18n } from "../../i18n/I18nContext";
 import { CONTACT } from "../../config/contact";
 
 function Footer() {
   const { t } = useI18n();
-  const year = new Date().getFullYear();
 
   const navLinks = [
-    { href: "#experience", key: "nav.experience" },
-    { href: "#pilot", key: "nav.pilot" },
-    { href: "#booking", key: "nav.booking" },
-    { href: "#contact", key: "nav.contact" },
+    { href: "/#experience", key: "nav.experience" },
+    { href: "/#routes", key: "nav.routes" },
+    { href: "/#pilot", key: "nav.pilot" },
+    { href: "/#booking", key: "nav.booking" },
+    { href: "/#contact", key: "nav.contact" },
   ] as const;
 
   return (
@@ -18,13 +19,13 @@ function Footer() {
       <div className="container-x py-14 md:py-20">
         <div className="grid gap-10 md:grid-cols-3 md:gap-12">
           <div>
-            <a
-              href="#top"
+            <Link
+              to="/"
               className="inline-flex items-center gap-2.5 font-display text-lg font-semibold text-slate-900 dark:text-white"
             >
               <Plane className="h-6 w-6 -rotate-12 text-brand-600 dark:text-brand-300" />
               Rundflüge Bodensee
-            </a>
+            </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-600 dark:text-slate-400">
               {t("footer.tagline")}
             </p>
@@ -45,20 +46,11 @@ function Footer() {
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <Phone className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-600 dark:text-brand-300" />
-                <a
-                  href={`tel:${CONTACT.pilotPhoneTel}`}
-                  className="transition hover:text-brand-600 dark:hover:text-brand-300"
-                >
-                  {CONTACT.pilotPhone}
-                </a>
-              </li>
-              <li className="flex items-start gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-600 dark:text-brand-300" />
                 <address className="not-italic leading-relaxed">
-                  <span className="block">{CONTACT.address.line1}</span>
-                  <span className="block">{CONTACT.address.line2}</span>
-                  <span className="block">{CONTACT.address.line3}</span>
+                  <span className="block">{CONTACT.meetingAddress.line1}</span>
+                  <span className="block">{CONTACT.meetingAddress.line2}</span>
+                  <span className="block">{CONTACT.meetingAddress.line3}</span>
                 </address>
               </li>
             </ul>
@@ -116,29 +108,31 @@ function Footer() {
         </p>
 
         <div className="mt-6 flex flex-col gap-4 border-t border-slate-200/80 pt-8 text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400 md:flex-row md:items-center md:justify-between">
-          <p>
-            &copy; {year} {CONTACT.pilotName} &middot; {t("footer.rights")}
-          </p>
+          <p>&copy; {CONTACT.pilotName}</p>
           <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <li>
-              <a
-                href="#imprint"
+              <Link
+                to="/impressum"
                 className="transition hover:text-brand-600 dark:hover:text-brand-300"
               >
-                {t("footer.imprint")}
-              </a>
+                Impressum
+              </Link>
             </li>
             <li>
-              <a
-                href="#privacy"
+              <Link
+                to="/datenschutz"
                 className="transition hover:text-brand-600 dark:hover:text-brand-300"
               >
-                {t("footer.privacy")}
-              </a>
+                Datenschutz
+              </Link>
             </li>
-            <li className="inline-flex items-center gap-1.5">
-              <Heart className="h-3.5 w-3.5 text-brand-600 dark:text-brand-300" />
-              {t("footer.builtWith")}
+            <li>
+              <Link
+                to="/cookies"
+                className="transition hover:text-brand-600 dark:hover:text-brand-300"
+              >
+                Cookie-Einstellungen
+              </Link>
             </li>
           </ul>
         </div>
